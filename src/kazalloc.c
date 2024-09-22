@@ -6,7 +6,7 @@
 // start off the global base at the nullpointer (0)
 void *global_base = NULL;
 
-void *kazalloc(size_t size) {
+void *malloc(size_t size) {
   // handle invalid size request
   if (size <= 0) {
     return NULL;
@@ -39,4 +39,24 @@ void *kazalloc(size_t size) {
   // return the address to the actual heap payload; which begins after the
   // metadata block
   return (block + 1);
+}
+
+/**
+Frees the memory pointed to by ptr
+*/
+void free(void *ptr) {
+  // don't do anything if the ptr is null
+  if (!ptr) {
+    return;
+  }
+  // get the associated block
+  struct block_meta *block = get_block_meta(ptr);
+  // ensure that the block is actually free
+  assert(block->free = 0);
+  // for testing purposes
+  assert(block->magic == 0x77777777 || block->magic == 0x12345678);
+  // mark the block as free
+  block->free = 1;
+  // mark the block for testing
+  block->magic = 0x55555555;
 }

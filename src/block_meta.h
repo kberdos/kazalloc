@@ -17,4 +17,6 @@ struct block_meta *find_free_block(void *global_base, struct block_meta **last,
 struct block_meta *request_space(void *global_base, struct block_meta *last,
                                  size_t size);
 
+struct block_meta *get_block_meta(void *addr);
+
 #endif

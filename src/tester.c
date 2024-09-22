@@ -4,6 +4,6 @@
 int main(int arc, char **argv) {
   printf("Hello from the tester!\n");
   // Make a call to kazalloc
-  void *p = kazalloc(0);
+  void *p = malloc(0);
   return 0;
 }

@@ -7,6 +7,11 @@ function will set the last pointer properly.
 - size: desired heap block size
 */
 
+// get the metadata associated with an address
+struct block_meta *get_block_meta(void *addr) {
+  return (struct block_meta *)addr - 1;
+}
+
 struct block_meta *find_free_block(void *global_base, struct block_meta **last,
                                    size_t size) {
   // start from the global base

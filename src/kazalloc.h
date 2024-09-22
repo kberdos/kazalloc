@@ -3,6 +3,8 @@
 
 #include <sys/types.h>
 
-void *kazalloc(size_t size);
+void *malloc(size_t size);
+
+void free(void *ptr);
 
 #endif
