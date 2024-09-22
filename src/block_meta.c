@@ -1,4 +1,5 @@
 #include "block_meta.h"
+#include "stdio.h"
 
 /**
 Attempts to find a free block in the heap of sufficient size.
