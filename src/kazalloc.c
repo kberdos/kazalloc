@@ -31,7 +31,7 @@ void *malloc(size_t size) {
       }
     } else {
       // nice! free block found. Let's update its metadata
-      // TODO: consider splitting block.
+      // TODO: consider splitting the block.
       block->free = 0;
       block->magic = 0x77777777;
     }
@@ -51,8 +51,8 @@ void free(void *ptr) {
   }
   // get the associated block
   struct block_meta *block = get_block_meta(ptr);
-  // ensure that the block is actually free
-  assert(block->free = 0);
+  // ensure that the block is actually being used
+  assert(block->free == 0);
   // for testing purposes
   assert(block->magic == 0x77777777 || block->magic == 0x12345678);
   // mark the block as free

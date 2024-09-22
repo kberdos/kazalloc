@@ -1,5 +1,6 @@
 #include "block_meta.h"
 #include "stdio.h"
+#include <assert.h>
 
 /**
 Attempts to find a free block in the heap of sufficient size.
@@ -31,8 +32,11 @@ Request a new block of heap memory of the proper size. Returns NULL if failure
 struct block_meta *request_space(void *global_base, struct block_meta *last,
                                  size_t size) {
   struct block_meta *block;
+  block = sbrk(0);
   // Try to move the program break by size bytes
-  void *request = sbrk(size);
+  void *request = sbrk(size + META_SIZE);
+  // assert that it actually moved it over (NOT thread safe)
+  assert((void *)block == request);
   if (request == (void *)-1) {
     return NULL;
   }
