@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
-// start off the global base at the nullpointer (0)
-void *global_base = NULL;
+// head of the linked list of free allocations
+void *list_head = NULL;
 
 void *malloc(size_t size) {
   // handle invalid size request
@@ -13,19 +13,19 @@ void *malloc(size_t size) {
   }
   // On the first call, request new space
   t_block block;
-  if (!global_base) {
-    block = request_space(global_base, global_base, size);
+  if (!list_head) {
+    block = request_space(list_head, list_head, size);
     if (!block) {
       return NULL;
     }
     // now the base is this first block
-    global_base = block;
+    list_head = block;
   } else {
-    t_block last = global_base;
-    block = find_free_block(global_base, &last, size);
+    t_block last = list_head;
+    block = find_free_block(list_head, &last, size);
     if (!block) {
       // no free block found, so let's request more space
-      block = request_space(global_base, last, size);
+      block = request_space(list_head, last, size);
       if (!block) {
         return NULL;
       }
