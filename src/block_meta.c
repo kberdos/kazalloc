@@ -10,16 +10,14 @@ function will set the last pointer properly.
 */
 
 // get the metadata associated with an address
-struct block_meta *get_block_meta(void *addr) {
-  return (struct block_meta *)addr - 1;
-}
+t_block get_t_block(void *addr) { return (t_block)addr - 1; }
 
-struct block_meta *find_free_block(void *global_base, struct block_meta **last,
+struct block_meta *find_free_block(void *global_base, t_block *last_ptr,
                                    size_t size) {
   // start from the global base
-  struct block_meta *current = global_base;
+  t_block current = global_base;
   while (current && !(current->free && current->size >= size)) {
-    *last = current;
+    *last_ptr = current;
     current = current->next;
   }
   return current;
@@ -29,9 +27,8 @@ struct block_meta *find_free_block(void *global_base, struct block_meta **last,
 Request a new block of heap memory of the proper size. Returns NULL if failure
 - last: pointer to the last block in the heap
 */
-struct block_meta *request_space(void *global_base, struct block_meta *last,
-                                 size_t size) {
-  struct block_meta *block;
+t_block request_space(void *global_base, t_block last, size_t size) {
+  t_block block;
   block = sbrk(0);
   // Try to move the program break by size bytes
   void *request = sbrk(size + META_SIZE);
@@ -48,6 +45,5 @@ struct block_meta *request_space(void *global_base, struct block_meta *last,
   block->next = NULL;
   block->free = 0;
   block->size = size;
-  block->magic = 0x12345678;
   return block;
 }

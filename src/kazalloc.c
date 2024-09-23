@@ -12,7 +12,7 @@ void *malloc(size_t size) {
     return NULL;
   }
   // On the first call, request new space
-  struct block_meta *block;
+  t_block block;
   if (!global_base) {
     block = request_space(global_base, global_base, size);
     if (!block) {
@@ -21,7 +21,7 @@ void *malloc(size_t size) {
     // now the base is this first block
     global_base = block;
   } else {
-    struct block_meta *last = global_base;
+    t_block last = global_base;
     block = find_free_block(global_base, &last, size);
     if (!block) {
       // no free block found, so let's request more space
@@ -33,7 +33,6 @@ void *malloc(size_t size) {
       // nice! free block found. Let's update its metadata
       // TODO: consider splitting the block.
       block->free = 0;
-      block->magic = 0x77777777;
     }
   }
   // return the address to the actual heap payload; which begins after the
@@ -50,13 +49,9 @@ void free(void *ptr) {
     return;
   }
   // get the associated block
-  struct block_meta *block = get_block_meta(ptr);
+  t_block block = get_t_block(ptr);
   // ensure that the block is actually being used
   assert(block->free == 0);
-  // for testing purposes
-  assert(block->magic == 0x77777777 || block->magic == 0x12345678);
   // mark the block as free
   block->free = 1;
-  // mark the block for testing
-  block->magic = 0x55555555;
 }
