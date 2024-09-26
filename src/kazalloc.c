@@ -37,7 +37,7 @@ void *malloc(size_t size) {
     }
   }
   // return the address to the actual heap payload; which begins after the
-  // metadata block
+  // metadata
   return (block + 1);
 }
 

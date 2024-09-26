@@ -17,8 +17,7 @@ Look through the linked list of blocks for a free block of sufficient size.
 Returns a valid block if found, null otherwise
 Calling find_free_block sets last_ptr to the last block in the linked list
 */
-struct block_meta *find_free_block(void *list_head, t_block *last_ptr,
-                                   size_t size) {
+t_block find_free_block(void *list_head, t_block *last_ptr, size_t size) {
   // start from the list head
   t_block current = list_head;
   while (current && !(current->free && current->size >= size)) {
@@ -84,7 +83,7 @@ void block_to_string(t_block block) {
   printf("- DATA: ");
   for (int i = 0; i < block->size; i++) {
     char b = *((char *)(block + 1) + i);
-    // Collapse empty bytes
+    // Collapse empty bytes into '.'
     if (!b) {
       printf(".");
     } else {
