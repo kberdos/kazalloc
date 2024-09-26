@@ -73,3 +73,23 @@ void try_split_block(t_block block, size_t desired_size) {
   block->next = split_block;
   block->size = desired_size;
 }
+
+/**
+Prints metadata and data within a block to stdout.
+*/
+void block_to_string(t_block block) {
+  printf("BLOCK AT %p:\n", block);
+  printf("- FREE %d:\n", block->free);
+  printf("- SIZE %zu:\n", block->size);
+  printf("- DATA: ");
+  for (int i = 0; i < block->size; i++) {
+    char b = *((char *)(block + 1) + i);
+    // Collapse empty bytes
+    if (!b) {
+      printf(".");
+    } else {
+      printf("0x%02x", b);
+    }
+  }
+  printf("\n");
+}

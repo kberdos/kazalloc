@@ -56,3 +56,18 @@ void free(void *ptr) {
   // mark the block as free
   block->free = 1;
 }
+
+/**
+Print the internal representation of the heap allocations
+*/
+void print_state() {
+  // start from the head, toString each block you hit until you reach the end
+  t_block cursor = (t_block)list_head;
+  printf("---------PRINTING STATE---------\n");
+  while (cursor) {
+    block_to_string(cursor);
+    cursor = cursor->next;
+    printf("\n");
+  }
+  printf("--------------------------------\n");
+}
