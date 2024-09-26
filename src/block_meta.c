@@ -52,3 +52,24 @@ t_block request_space(void *list_head, t_block last, size_t size) {
   block->size = size;
   return block;
 }
+
+/**
+Attempts to split a block (must be big enough for a new header)
+- desired_size: the desired size to be allocated in the original block (which is
+at most the block's current size)
+| META_SIZE | desired_size | META_SIZE | new_size BYTES |
+*/
+void try_split_block(t_block block, size_t desired_size) {
+  // Prevent splits with insufficient size
+  if (block->size < desired_size + META_SIZE + MIN_SPLIT_SIZE) {
+    return;
+  }
+  size_t split_size = block->size - (desired_size + META_SIZE);
+  // construct a new block with pointer arith.
+  t_block split_block = block + META_SIZE + desired_size;
+  split_block->size = split_size;
+  split_block->free = 1;
+  split_block->next = block->next;
+  block->next = split_block;
+  block->size = desired_size;
+}

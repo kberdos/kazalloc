@@ -31,8 +31,9 @@ void *malloc(size_t size) {
       }
     } else {
       // nice! free block found. Let's update its metadata
-      // TODO: consider splitting the block.
       block->free = 0;
+      // Try to split the block up
+      try_split_block(block, size);
     }
   }
   // return the address to the actual heap payload; which begins after the
