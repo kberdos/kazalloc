@@ -21,7 +21,19 @@ void run_malloc_test() {
   print_state();
 }
 
+void test_fusion() {
+  int *i1 = malloc(sizeof(int));
+  int *i2 = malloc(sizeof(int));
+  int *i3 = malloc(sizeof(int));
+  print_state();
+  free(i1);
+  free(i3);
+  free(i2);
+  print_state();
+}
+
 int main(int arc, char **argv) {
-  run_malloc_test();
+  // run_malloc_test();
+  test_fusion();
   return 0;
 }

@@ -18,27 +18,23 @@ void *malloc(size_t size) {
     if (!block) {
       return NULL;
     }
-    // now the base is this first block
     list_head = block;
   } else {
-    t_block last = list_head;
-    block = find_free_block(list_head, &last, size);
+    t_block list_tail = list_head;
+    block = find_free_block(list_head, &list_tail, size);
     if (!block) {
       // no free block found, so let's request more space
-      block = request_space(list_head, last, size);
+      block = request_space(list_head, list_tail, size);
       if (!block) {
         return NULL;
       }
     } else {
       // nice! free block found. Let's update its metadata
       block->free = 0;
-      // Try to split the block up
       try_split_block(block, size);
     }
   }
-  // return the address to the actual heap payload; which begins after the
-  // metadata
-  return (block + 1);
+  return (block + 1); // return address after metadata
 }
 
 /**
@@ -55,6 +51,11 @@ void free(void *ptr) {
   assert(block->free == 0);
   // mark the block as free
   block->free = 1;
+  // Attempt to the fuse the block with its neighbors
+  block = fuse_right(block);
+  if (block->prev && block->prev->free) {
+    block = fuse_right(block->prev);
+  }
 }
 
 /**
@@ -69,5 +70,4 @@ void print_state() {
     cursor = cursor->next;
     printf("\n");
   }
-  printf("--------------------------------\n");
 }

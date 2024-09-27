@@ -7,14 +7,14 @@
 typedef struct block_meta *t_block;
 
 struct block_meta {
-  size_t size;
-  t_block next;
-  t_block prev; // extra for optimization
-  int free;
+  size_t size;  // 8 bytes
+  t_block next; // 8 bytes
+  t_block prev; // 8 bytes
+  int free;     // 4 bytes
 };
 
-// Size of a metadata block
 #define META_SIZE sizeof(struct block_meta)
+
 // Minimum size of a newly-split block
 #define MIN_SPLIT_SIZE 4
 
@@ -24,6 +24,8 @@ t_block request_space(void *list_head, t_block last, size_t size);
 t_block get_t_block(void *addr);
 
 void try_split_block(t_block block, size_t size);
+
+t_block fuse_right(t_block block);
 
 void block_to_string(t_block block);
 
