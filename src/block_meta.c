@@ -12,7 +12,6 @@ Calling find_free_block points list_tail_ptr to the tail block in the linked
 list
 */
 t_block find_free_block(void *list_head, t_block *list_tail_ptr, size_t size) {
-  // start from the list head
   t_block current = list_head;
   while (current && !(current->free && current->size >= size)) {
     *list_tail_ptr = current;
@@ -49,10 +48,11 @@ t_block request_space(void *list_head, t_block list_tail, size_t size) {
 Attempts to split a block (must be big enough for a new header)
 - desired_size: the desired size to be allocated in the original block (which is
 at most the block's current size)
+
 | META_SIZE | desired_size | META_SIZE | new_size BYTES |
+
 */
 void try_split_block(t_block block, size_t desired_size) {
-  // Prevent splits with insufficient size
   if (block->size < desired_size + META_SIZE + MIN_SPLIT_SIZE) {
     return;
   }

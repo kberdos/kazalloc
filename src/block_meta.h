@@ -15,8 +15,7 @@ struct block_meta {
 
 #define META_SIZE sizeof(struct block_meta)
 
-// Minimum size of a newly-split block
-#define MIN_SPLIT_SIZE 4
+#define MIN_SPLIT_SIZE 4 // min size of a newly-split block
 
 t_block find_free_block(void *list_head, t_block *last_ptr, size_t size);
 t_block request_space(void *list_head, t_block last, size_t size);
