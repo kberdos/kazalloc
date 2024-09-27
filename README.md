@@ -8,7 +8,10 @@
 
 ### `free`
 - Basic functionality 
-- WIP: Fusing free blocks
+- Fusing free blocks
+
+### `print_state`
+- Prints all allocated blocks with state & data
 
 ## References:
 - [Marwan Burelle's Malloc Tutorial](https://wiki-prog.infoprepa.epita.fr/images/0/04/Malloc_tutorial.pdf)
